@@ -76,10 +76,14 @@ As rotation is a local operation only exchanging pointers it's runtime is O(1).
 
 ## Insertion
 
-We create a node with the given key and set its color to red. Then we insert it into the the tree by performing a standard insert into a BST. After this, the tree might not be a valid RBT anymore, so we fix the red-black properties by calling the insertFixup algorithm.
+We create a node with the given key and set its color to red. Then we insert it into the the tree by performing a standard insert into a BST. After this, the tree might not be a valid RBT anymore, so we fix the red-black properties by calling the `insertFixup` algorithm.
 The only violation of the red-black properties occurs at the inserted node z and its parent. Either both are red, or the parent does not exist (so there is a violation since the root must be black).
 We have three distinct cases:
-**Case 1:** The uncle of z is red. If z.parent is left child, z's uncle is z.grandparent's right child. If this is the case, we recolor and move z to z.grandparent, then we check again for this new z. In the following cases, we denote a red node with (x) and a black node with {x}, p = parent, gp = grandparent and u = uncle
+
+**Case 1:** The uncle of z is red. If z's parent (`z.parent`) is a left child, then z's uncle is z's grandparent's right child. If this is the case, we recolor and move z to be the grandparent (`z.parent.parent = z`), then we check again for this case starting at the new z. 
+
+_**Note:**_ In the visual examples below, a node enclosed by round brackets (e.g., `(` and `)`) is designated as a red node, while a node surrounded by curly brackets (e.g., `{` and `}`) is a black node. Additionally, the labels used are as follows: p=parent, gp=grandparent, and u=uncle.
+
 ```
          |                   |
         {gp}               (newZ)
@@ -89,7 +93,6 @@ We have three distinct cases:
   (z)  [C] [D] [E]    (z) [C] [D] [E]
   / \                 / \
 [A] [B]             [A] [B]
-
 ```
 **Case 2a:** The uncle of z is black and z is right child. Here, we move z upwards, so z's parent is the newZ and then we rotate around this newZ. After this, we have Case 2b.
 ```
